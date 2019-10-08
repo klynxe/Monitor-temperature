@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/img">
+        <file alias="color.png">Resources/color_temperature.png</file>
+    </qresource>
+</RCC>
