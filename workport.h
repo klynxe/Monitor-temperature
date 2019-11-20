@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSerialPort>
+#include <sleeper.h>
 
 class WorkPort : public QObject
 {
@@ -25,9 +26,18 @@ signals:
     //void s_getData();
     void s_portOpen(int result);
     void s_portClose(int result);
+
+    void s_data(QByteArray);
+    void s_error(QString error);
 public slots:
     void on_portOpen(QString portName);
     void on_portClose();
+
+    void on_data(QByteArray bytes);
+private slots:
+    void on_readyRead();
+    void on_error(QSerialPort::SerialPortError);
+
     //void on_sendData();
 };
 

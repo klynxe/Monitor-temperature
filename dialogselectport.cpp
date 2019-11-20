@@ -21,6 +21,7 @@ DialogSelectPort::~DialogSelectPort()
 
 void DialogSelectPort::loadPorts(){
     infos = QSerialPortInfo::availablePorts();
+    ui->availablePort->clear();
     for (const QSerialPortInfo &info : infos)
         ui->availablePort->addItem(info.portName());
     if(infos.size() == 0)
@@ -89,6 +90,16 @@ void DialogSelectPort::on_portClose(int result)
     ui->open->setEnabled(true);
 }
 
+void DialogSelectPort::on_error(QString error)
+{
+    emit s_portClose();
+    QMessageBox msgBox;
+    msgBox.setText(error);
+    msgBox.exec();
+    return;
+}
+
+
 void DialogSelectPort::on_cancel_clicked()
 {
     close();
@@ -123,4 +134,9 @@ void DialogSelectPort::on_open_clicked()
     }
 
 
+}
+
+quint16 DialogSelectPort::getStatusPort() const
+{
+    return statusPort;
 }

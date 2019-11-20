@@ -3,10 +3,16 @@
 #include <QException>
 #include <QIntValidator>
 
-DeviceSetting::DeviceSetting(int row, int column, bool topRow, bool firstColumn, QObject *parent) : QObject(parent)
+#include "devicevalue.h"
+
+DeviceSetting::DeviceSetting(int row, int column, bool topRow, bool firstColumn, QObject *parent) : QObject(parent), countTryRequest(0)
 {
     this->row = row;
     this->column = column;
+    number= 0;
+    for(int i = 0; i < column; i++)
+        this->number+=rowSize[i];
+    this->number+=row;
     this->name = QString('a'+row)+QString::number(column+1);
 
     groupCell = new QGroupBox;
@@ -49,7 +55,7 @@ DeviceSetting::DeviceSetting(int row, int column, bool topRow, bool firstColumn,
         lable_1_7->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         lable_1_7->setAlignment(Qt::AlignCenter);
         lable_3_0 = new QLabel;
-        lable_3_0->setText("3.8");
+        lable_3_0->setText("3.0");
         lable_3_0->setMinimumWidth(50);
         lable_3_0->setMinimumHeight(15);
         lable_3_0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -208,6 +214,16 @@ bool DeviceSetting::indexByName(QString name, int &row, int &column)
 DeviceSettingData DeviceSetting::getDsd() const
 {
     return dsd;
+}
+
+int DeviceSetting::getCountTryRequest() const
+{
+    return countTryRequest;
+}
+
+void DeviceSetting::setCountTryRequest(int value)
+{
+    countTryRequest = value;
 }
 
 DeviceSettingData::DeviceSettingData()

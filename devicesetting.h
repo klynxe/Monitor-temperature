@@ -45,9 +45,13 @@ public:
 
     DeviceSettingData getDsd() const;
 
+    int getCountTryRequest() const;
+    void setCountTryRequest(int value);
+
 private:
     int row;
     int column;
+    int number;
     QString name;
 
     DeviceSettingData dsd;
@@ -70,6 +74,8 @@ private:
     QSpinBox * spinP_1_7;
     QSpinBox * spinP_3_0;
     QSpinBox * spinP_3_8;
+
+    int countTryRequest;
 
 signals:
 

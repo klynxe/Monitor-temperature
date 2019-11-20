@@ -31,14 +31,20 @@ SOURCES += main.cpp\
     devicesetting.cpp \
     dialogselectport.cpp \
     workport.cpp \
-    threadobject.cpp
+    threadobject.cpp \
+    packagesend.cpp \
+    packageget.cpp \
+    sleeper.cpp
 
 HEADERS  += mainwindow.h \
     devicevalue.h \
     devicesetting.h \
     dialogselectport.h \
     workport.h \
-    threadobject.h
+    threadobject.h \
+    packagesend.h \
+    packageget.h \
+    sleeper.h
 
 FORMS    += mainwindow.ui \
     dialogselectport.ui

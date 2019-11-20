@@ -6,8 +6,13 @@ QImage DeviceValue::colorImg = QImage(":/img/color.png");
 
 DeviceValue::DeviceValue(int row, int column, bool topRow, bool firstColumn, QObject *parent) : QObject(parent)
 {
+    QString buf;
     this->row = row;
     this->column = column;
+    number = 0;
+    for(int i = 0; i < column; i++)
+        this->number+=rowSize[i];
+    this->number+=row;
     this->name = QString('a'+row)+QString::number(column+1);
 
     groupCell = new QGroupBox;
@@ -51,7 +56,7 @@ DeviceValue::DeviceValue(int row, int column, bool topRow, bool firstColumn, QOb
         lable_1_7->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         lable_1_7->setAlignment(Qt::AlignCenter);
         lable_3_0 = new QLabel;
-        lable_3_0->setText("3.8");
+        lable_3_0->setText("3.0");
         lable_3_0->setMinimumWidth(25);
         lable_3_0->setMinimumHeight(15);
         lable_3_0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -72,19 +77,19 @@ DeviceValue::DeviceValue(int row, int column, bool topRow, bool firstColumn, QOb
         lableU->setMinimumHeight(15);
     }
     editU_1_7 = new QLineEdit;
-    editU_1_7->setText("0");
+    editU_1_7->setText(buf.sprintf("%.1f",0.0));
     editU_1_7->setMinimumWidth(25);
     editU_1_7->setMinimumHeight(15);
     editU_1_7->setReadOnly(true);
     editU_1_7->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     editU_3_0 = new QLineEdit;
-    editU_3_0->setText("0");
+    editU_3_0->setText(buf.sprintf("%.1f",0.0));
     editU_3_0->setMinimumWidth(25);
     editU_3_0->setMinimumHeight(15);
     editU_3_0->setReadOnly(true);
     editU_3_0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     editU_3_8 = new QLineEdit;
-    editU_3_8->setText("0");
+    editU_3_8->setText(buf.sprintf("%.1f",0.0));
     editU_3_8->setMinimumWidth(25);
     editU_3_8->setMinimumHeight(15);
     editU_3_8->setReadOnly(true);
@@ -98,19 +103,19 @@ DeviceValue::DeviceValue(int row, int column, bool topRow, bool firstColumn, QOb
         lableP->setMinimumHeight(15);
     }
     editP_1_7 = new QLineEdit;
-    editP_1_7->setText("0");
+    editP_1_7->setText(buf.sprintf("%.1f",0.0));
     editP_1_7->setMinimumWidth(25);
     editP_1_7->setMinimumHeight(15);
     editP_1_7->setReadOnly(true);
     editP_1_7->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     editP_3_0 = new QLineEdit;
-    editP_3_0->setText("0");
+    editP_3_0->setText(buf.sprintf("%.1f",0.0));
     editP_3_0->setMinimumWidth(25);
     editP_3_0->setMinimumHeight(15);
     editP_3_0->setReadOnly(true);
     editP_3_0->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     editP_3_8 = new QLineEdit;
-    editP_3_8->setText("0");
+    editP_3_8->setText(buf.sprintf("%.1f",0.0));
     editP_3_8->setMinimumWidth(25);
     editP_3_8->setMinimumHeight(15);
     editP_3_8->setReadOnly(true);
@@ -200,13 +205,14 @@ void DeviceValue::setValue(int U_1_7, int U_3_0, int U_3_8, int P_1_7, int P_3_0
     dvd.P_3_8 = P_3_8;
     dvd.T = T;
 
-    editU_1_7->setText(QString::number(U_1_7));
-    editU_3_0->setText(QString::number(U_3_0));
-    editU_3_8->setText(QString::number(U_3_8));
+    QString buf;
+    editU_1_7->setText(buf.sprintf("%.1f",U_1_7*0.1));
+    editU_3_0->setText(buf.sprintf("%.1f",U_3_0*0.1));
+    editU_3_8->setText(buf.sprintf("%.1f",U_3_8*0.1));
 
-    editP_1_7->setText(QString::number(P_1_7));
-    editP_3_0->setText(QString::number(P_3_0));
-    editP_3_8->setText(QString::number(P_3_8));
+    editP_1_7->setText(buf.sprintf("%.1f",(U_1_7*0.1*U_1_7*0.1*P_1_7)/154.44));
+    editP_3_0->setText(buf.sprintf("%.1f",(U_3_0*0.1*U_3_0*0.1*P_3_0)/429.0));
+    editP_3_8->setText(buf.sprintf("%.1f",(U_3_8*0.1*U_3_8*0.1*P_3_8)/1000.0));
 
     editT_count->setText(QString::number(T));
     QRgb rgbColor;
@@ -219,7 +225,9 @@ void DeviceValue::setValue(int U_1_7, int U_3_0, int U_3_8, int P_1_7, int P_3_0
     {
         rgbColor = colorImg.pixel(0,0);
     }
-
+    QString s = "background-color:rgb(" + QString::number(qRed(rgbColor))+ ", " +
+            QString::number(qGreen(rgbColor))+ ", " +
+            QString::number(qBlue(rgbColor))+ ");";
     wT_color->setStyleSheet("background-color:rgb(" + QString::number(qRed(rgbColor))+ ", " +
                             QString::number(qGreen(rgbColor))+ ", " +
                             QString::number(qBlue(rgbColor))+ ");");
@@ -238,6 +246,16 @@ QString DeviceValue::getName() const
 DeviceValueData DeviceValue::getDvd() const
 {
     return dvd;
+}
+
+void DeviceValue::setVisible(bool visible)
+{
+    groupCell->setEnabled(visible);
+    if(!visible)
+    {
+        setValue(0,0,0,0,0,0,0);
+        wT_color->setStyleSheet("background-color:transparent;");
+    }
 }
 
 DeviceValueData::DeviceValueData()

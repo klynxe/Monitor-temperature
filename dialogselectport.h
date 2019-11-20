@@ -20,12 +20,15 @@ public:
     ~DialogSelectPort();
 
     void loadPorts();
+    quint16 getStatusPort() const;
+
 signals:
     void s_portOpen(QString name);
     void s_portClose();
 public slots:
     void on_portOpen(int result);
     void on_portClose(int result);
+    void on_error(QString error);
 private slots:
     void on_cancel_clicked();
 

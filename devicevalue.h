@@ -47,12 +47,15 @@ public:
 
     DeviceValueData getDvd() const;
 
+    void setVisible(bool visible);
+
 private:
 
     static QImage colorImg;
 
     int row;
     int column;
+    int number;
     QString name;
 
     DeviceValueData dvd;
