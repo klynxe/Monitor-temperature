@@ -212,7 +212,7 @@ void DeviceValue::setValue(int U_1_7, int U_3_0, int U_3_8, int P_1_7, int P_3_0
 
     editP_1_7->setText(buf.sprintf("%.1f",(U_1_7*0.1*U_1_7*0.1*P_1_7)/154.44));
     editP_3_0->setText(buf.sprintf("%.1f",(U_3_0*0.1*U_3_0*0.1*P_3_0)/429.0));
-    editP_3_8->setText(buf.sprintf("%.1f",(U_3_8*0.1*U_3_8*0.1*P_3_8)/1000.0));
+    editP_3_8->setText(buf.sprintf("%.1f",(U_3_8*0.1*U_3_8*0.1*P_3_8)/3300.0));
 
     editT_count->setText(QString::number(T));
     QRgb rgbColor;

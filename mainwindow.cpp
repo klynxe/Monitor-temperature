@@ -461,7 +461,7 @@ void MainWindow::on_deviceValueSaveToFile_clicked()
         fileData += buf.sprintf("%.1f",dv->getDvd().U_3_0*0.1) + "V;";
         fileData += buf.sprintf("%.1f",(dv->getDvd().U_3_0*0.1*dv->getDvd().U_3_0*0.1*dv->getDvd().P_3_0)/429.0) + "W;";
         fileData += buf.sprintf("%.1f",dv->getDvd().U_3_8*0.1) + "V;";
-        fileData += buf.sprintf("%.1f",(dv->getDvd().U_3_8*0.1*dv->getDvd().U_3_8*0.1*dv->getDvd().P_3_8)/1000.0) + "W;";
+        fileData += buf.sprintf("%.1f",(dv->getDvd().U_3_8*0.1*dv->getDvd().U_3_8*0.1*dv->getDvd().P_3_8)/3300.0) + "W;";
         fileData += QString::number(dv->getDvd().T) +"°C";
     }
     QDir dir(path);
